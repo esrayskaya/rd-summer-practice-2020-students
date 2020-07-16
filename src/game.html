@@ -30,26 +30,24 @@
                 <span class="game-timer-ok">00:00</span>
             </div>
             <div class="row">
-                <div class="col-xs-3">
-                    <div id="team1">
+                    <div id="team1" class="col-xs-3">
                         <div>
                             <span id="team1Caption" class="teamCaption" >Команда 1</span>
                         </div>
                         <div id="team1Status">
-                            <div class="teamLives">.
+                            <div class="teamLives">
                                 <span>Жизни: </span>
                                 <span id="team1Lives">0</span>
                             </div>
                             <div class="teamCoins">
                                 <span>Монеты: </span>
-                                <span id="team1Coins">1</span>
+                                <span id="team1Coins">0</span>
                             </div>
                         </div>
                         <div id="team1Users">
                             <div>Player 1</div>
                         </div>
                     </div>
-                </div>
                 <div class="col-xs-6">
                     <div id="map">
                         <canvas id="gameCanvas"></canvas>
@@ -58,18 +56,18 @@
                 <div class="col-xs-3">
                     <div id="team2">
                         <div>
-                            <span id="team2Caption">
+                            <span id="team2Caption" class="teamCaption">
                                 Команда 2
                             </span>
                         </div>
                         <div id="team2Status">  
                             <div class="teamLives">
-                                Жизни: 
-                                <span id="team2Lives">2</span>
+                                <span>Жизни: </span>
+                                <span id="team2Lives">0</span>
                             </div>
                             <div class="teamCoins">
-                                Монеты: 
-                                <span id="team2Coins">2</span>
+                                <span>Монеты: </span>
+                                <span id="team2Coins">0</span>
                             </div>
                         </div>
                         <div id="team2Users">
@@ -79,13 +77,17 @@
                 </div>
             </div>
         </div>
-        <div id="controls">
-            <button id="btnGameList" class="game-btn">К списку игр</button>
-            
-            <button id="btnConnect" class="game-btn">Подключиться к игре (случайно)</button>
-            <button id="btnConnectPolice" class="game-btn">Подключиться за полицейских</button>
-            <button id="btnConnectThief" class="game-btn">Подключиться за мошенников</button>
-            <button id="btnPause" class="game-btn">Пауза</button>
+        <div id="controls" class="row">
+            <div class="col-xs-12">
+                <button id="btnGameList" class="game-btn btn btn-info">К списку игр</button>
+                <button id="btnStart" class="game-btn btn btn-info">Начать игру</button>          
+                <button id="btnConnect" class="game-btn btn btn-info">Подключиться к игре (случайно)</button>
+                <button id="btnConnectPolice" class="game-btn btn btn-info">Подключиться за полицейских</button>
+                <button id="btnConnectThief" class="game-btn btn btn-info">Подключиться за мошенников</button>
+                <button id="btnPause" class="game-btn btn btn-warning">Пауза</button>
+                <button id="btnLeave" class="game-btn btn btn-danger">Покинуть игру</button>
+                <button id="btnCancel" class="game-btn btn btn-danger">Прервать игру</button>
+            </div>
         </div>
     </div>
     

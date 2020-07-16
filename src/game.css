@@ -4,7 +4,6 @@
 
 body{
   background-color: lightslategrey;
-  min-height: 100vh;
 }
 
 #game{
@@ -60,10 +59,10 @@ body{
   border-radius: 3px;
 }
 
-.team1Lives, 
-.team1Coins{
+.teamLives,
+.teamCoins {
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-between;
 }
 
 #team1Status,
@@ -89,3 +88,13 @@ body{
 
 }
 
+#map{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.game-btn{
+  margin: 5px;
+}
