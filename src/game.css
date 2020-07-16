@@ -1,3 +1,91 @@
 .hidden{
   display: none;
 }
+
+body{
+  background-color: lightslategrey;
+  min-height: 100vh;
+}
+
+#game{
+  background-color: aqua;
+  max-width: 1000px;
+  margin: 20px auto;
+
+  padding: 20px;
+}
+
+#gameCaption{
+  background-color: darkblue;
+  padding: 10px;
+
+  color: azure;
+  font-size: 24px;
+}
+
+.gameCaption-name{
+  font-weight: bold;
+}
+
+.gameCaption-status{
+  background-color: burlywood;
+  color: black;
+  padding: 5px;
+  border: 1px solid red;
+  border-radius: 8px;
+}
+
+.game-timer-ok{
+  font-size: 30px;
+  text-align: center;
+  display: block;
+  padding: 10px 0;
+}
+
+#team1{
+  border: 1px solid blue;
+  background-color: cornflowerblue;
+}
+
+#team1,
+#team2{
+  border-radius: 5px;
+  padding: 3px;
+}
+
+#team1Caption{
+  background-color: dodgerblue;
+  padding: 3px;
+  display: block;
+  border-radius: 3px;
+}
+
+.team1Lives, 
+.team1Coins{
+  display: flex;
+  justify-content: space-evenly;
+}
+
+#team1Status,
+#team2Status{
+  margin: 10px 0;
+}
+
+#team1Users,
+#team2Users{
+  font-weight: bold;
+}
+
+#team2{
+  border: 1px solid red;
+  background-color: lightblue;
+}
+
+#team2Caption{
+  background-color: rgb(209, 191, 25);
+  padding: 3px;
+  display: block;
+  border-radius: 3px;
+
+}
+
