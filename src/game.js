@@ -43,6 +43,40 @@ $imgSwitch
  */
 
 // ...
+const $containerGame = document.getElementById('game');
+const $loading = document.getElementById('loading');
+const $error = document.getElementById('loadError');
+
+const $mapCanvas = document.getElementById('gameCanvas');
+const $gameCaption = document.getElementById('gameCaption');
+const $switchTimer = document.getElementById('switchTimer');
+const $team1Container = document.getElementById('team1');
+const $team1Caption = document.getElementById('team1Caption');
+const $team1Players = document.getElementById('team1Users');
+const $team1Lives = document.getElementById('team1Lives');
+const $team1Coins = document.getElementById('team1Coins');
+const $team2Container = document.getElementById('team2');
+const $team2Caption = document.getElementById('team2Caption');
+const $team2Players = document.getElementById('team2Users');
+const $team2Lives = document.getElementById('team2Lives');
+const $team2Coins = document.getElementById('team2Coins');
+
+const $btnGameList = document.getElementById('btnGameList');
+const $btnStart = document.getElementById('btnStart');
+const $btnConnect = document.getElementById('btnConnect');
+const $btnConnectPolice = document.getElementById('btnConnectPolice');
+const $btnConnectThief = document.getElementById('btnConnectThief');
+const $btnLeave = document.getElementById('btnLeave');
+const $btnPause = document.getElementById('btnPause');
+const $btnCancel = document.getElementById('btnCancel');
+
+const $imgHeart = document.getElementById('img_heart');
+const $imgCoin = document.getElementById('img_coin');
+const $imgPolice = document.getElementById('img_police');
+const $imgPoliceSelf = document.getElementById('img_police_self');
+const $imgThief = document.getElementById('img_thief');
+const $imgThiefSelf = document.getElementById('img_thief_self');
+const $imgSwitch = document.getElementById('img_switch');
 
 // game.html UI
 (function (app, $) {
@@ -76,19 +110,37 @@ $imgSwitch
                 /**
                  * TODO Task 2. Опишите функцию которая задаст размеры игрового поля
                  */
+                $canvas.width = `${width}`;
+                $canvas.height = `${height}`;
+                $canvas.style.width = width + 'px'; //'500px' - string
+                $canvas.style.height = `${height}px`;
+
                 return $canvas;
             }
 
             function drawMapField(canvas, map, width, height, cellSize) {
-                const ctx = canvas.getContext("2d");
-                ctx.fillStyle = "#FFFFFF";
-                ctx.fillRect(0, 0, width, height);
+                const ctx = canvas.getContext("2d");//контекст
+                ctx.fillStyle = "#FFFFFF";//back color
+                ctx.fillRect(0, 0, width, height);//рисование квадратика
                 ctx.strokeStyle = "#C0C0C0";
                 ctx.strokeWidth = "1px";
                 /**
                  * TODO Task 3. Опишите заполнение цветами карты на канвасе
                  */
-                // ...
+                for (let i = 0; i < map.cells.length; i++) {
+                    const cell = map.cells[i];
+                    const x = i % map.width;
+                    const y = Math.floor(i / map.width);
+
+                    if (cell === GameApi.MapCellType.wall) {//является ли ячейка стеной
+                        ctx.fillStyle = '#C8C8C8';
+                        ctx.fillRect(x * cellSize, y * cellSize, cellSize);
+                    } else {
+                        ctx.fillStyle = '#FFFFFF';
+                        ctx.fillRect(x * cellSize, y * cellSize, cellSize);
+                        ctx.stroke();
+                    }
+                }
             }
 
             function getCanvasBuffer(width, height, map, cellSize) {
@@ -151,14 +203,14 @@ $imgSwitch
              *      можно попробовать сделать это используя модальные окна, только если игра уже работает
              *      https://getbootstrap.com/docs/3.3/javascript/#modals
              */
-            GameView.prototype.goToGameList = function () { window.location.replace("index.html");};
-            GameView.prototype.startGame = function () { this.state.game.start();};
-            GameView.prototype.joinAsRandom = function () { this.state.game.join(GameApi.GameTeamRole.random);};
-            GameView.prototype.joinAsPolice = function () { this.state.game.join(GameApi.GameTeamRole.police);};
-            GameView.prototype.joinAsThief = function () { this.state.game.join(GameApi.GameTeamRole.thief);};
-            GameView.prototype.leaveGame = function () { this.state.game.leave();};
-            GameView.prototype.pauseGame = function () { this.state.game.pause();};
-            GameView.prototype.cancelGame = function () { this.state.game.cancel();};
+            GameView.prototype.goToGameList = function () { window.location.replace("index.html"); };
+            GameView.prototype.startGame = function () { this.state.game.start(); };
+            GameView.prototype.joinAsRandom = function () { this.state.game.join(GameApi.GameTeamRole.random); };
+            GameView.prototype.joinAsPolice = function () { this.state.game.join(GameApi.GameTeamRole.police); };
+            GameView.prototype.joinAsThief = function () { this.state.game.join(GameApi.GameTeamRole.thief); };
+            GameView.prototype.leaveGame = function () { this.state.game.leave(); };
+            GameView.prototype.pauseGame = function () { this.state.game.pause(); };
+            GameView.prototype.cancelGame = function () { this.state.game.cancel(); };
 
             GameView.prototype.stopMoving = function (event) {
                 event.preventDefault();
@@ -187,7 +239,14 @@ $imgSwitch
                  * TODO Task 4. Используя addEventListener повешайте обработчики событий на кнопки
                  *  нажатия на кнопки это событие click
                  */
-                // ...
+                $btnGameList.addEventListener('click', this.goToGameList.bind(this));
+                $btnStart.addEventListener('click', this.startGame.bind(this));
+                $btnConnect.addEventListener('click', this.joinAsRandom.bind(this));
+                $btnConnectPolice.addEventListener('click', this.joinAsPolice.bind(this));
+                $btnConnectThief.addEventListener('click', this.joinAsThief.bind(this));
+                $btnLeave.addEventListener('click', this.leaveGame.bind(this));
+                $btnPause.addEventListener('click', this.pauseGame.bind(this));
+                $btnCancel.addEventListener('click', this.cancelGame.bind(this));
 
                 window.addEventListener('keydown', (event) => {
                     if ($lastKey === event.key) {
@@ -197,7 +256,21 @@ $imgSwitch
                      * TODO Task 5. Допишите обработку нажатий клавиш передвижения
                      */
                     switch (event.key) {
-                        // ...
+                        case 'Spase':
+                            this.stopMoving(event);
+                            break;
+                        case 'ArrowLeft':
+                            this.moveLeft(event);
+                            break;
+                        case 'ArrowUp':
+                            this.moveUp(event);
+                            break;
+                        case 'ArrowRight':
+                            this.moveRight(event);
+                            break;
+                        case 'ArrowDown':
+                            this.moveDown(event);
+                            break;
                     }
                 });
                 window.addEventListener('keyup', () => $lastKey = -1);
@@ -288,6 +361,7 @@ $imgSwitch
                 /**
                  * TODO: Task 6. Поменяйте под вашу вёрстку
                  */
+
                 utils.reWriteDomElement(
                     this.game.$gameCaption, `<div class='game-caption-name'>${name} <span class='game-caption-status game-caption-status-${status}'>${utils.getStatusName(status)}</span></div>`,
                 );
@@ -310,6 +384,7 @@ $imgSwitch
                 /**
                  * TODO: Task 7. Поменяйте под вашу вёрстку
                  */
+
                 return `<div id='player${player.id}' class='game-player game-player-status-${status}'>
                     <span class='game-player-name'>${player.name}</span>
                      [<span class='game-player-coins'>${player.coins}</span>
@@ -333,6 +408,7 @@ $imgSwitch
                 /**
                  * TODO: Task 8. Поменяйте под вашу вёрстку
                  */
+
                 utils.reWriteDomElement($team.$caption, `<div class='game-team-${role}-caption'>
                     <span class='game-team-name'>${team.name}</span>
                     <span class='game-team-role game-team-role-${role}'>${ROLE_TITLES[team.role] || ROLE_TITLES[team.role]}</span>
@@ -363,7 +439,7 @@ $imgSwitch
             GameView.prototype.setButtons = function (status) {
                 status = status || this.state.status;
                 const currentUser = this.state.gameApi.questor.user.id;
-                const isOwner = currentUser === this.state.owner.id;
+                const isOwner = currentUser === this.state.owner.id;//flag , has-move
                 const isAdmin = this.state.gameApi.questor.user.isAdmin;
                 const connected = Boolean(this.state.getPlayer(currentUser));
 
@@ -373,7 +449,23 @@ $imgSwitch
                      *    для добавление класса можно использовать utils.addClasses($el,'hidden')
                      *    для удаления класса можно использовать utils.removeClasses($el,'hidden')
                      */
-                    // ...
+                    if (isOwner) {
+                        //delete class hidden from btnstart and from btncancel
+                        utils.removeClasses($btnStart, 'hidden');
+                        utils.removeClasses($btnCancel, 'hidden');
+                    } else {
+                        //add class hidden to start
+                        utils.addClasses($btnStart, 'hidden');
+                        if (isAdmin) {
+                            //del hidden from cancel
+                            utils.removeClasses($btnCancel, 'hidden');
+                        }
+                        else {
+                            utils.addClasses($btnCancel, 'hidden');
+                            //add class hidden cancel
+                        }
+                    }
+
                 }
                 /**
                  * TODO: Task 10. Проинициализируйте состояние кнопок, для статусов
@@ -381,6 +473,13 @@ $imgSwitch
                  */
                 if (status === GameApi.GameStatus.canceled || status === GameApi.GameStatus.finished) {
                     // ...
+                    utils.addClasses($btnStart, 'hidden');
+                    utils.addClasses($btnLeave, 'hidden');
+                    utils.addClasses($btnPause, 'hidden');
+                    utils.addClasses($btnCancel, 'hidden');
+                    utils.addClasses($btnConnect, 'hidden');
+                    utils.addClasses($btnConnectThief, 'hidden');
+                    utils.addClasses($btnConnectPolice, 'hidden');
                     return;
                 }
 
@@ -391,8 +490,21 @@ $imgSwitch
                 if (this.state.status === GameApi.GameStatus.open ||
                     this.state.status === GameApi.GameStatus.ready) {
                     // ...
+                    utils.addClasses($btnPause, 'hidden');
                     initBtnsStartCancel();
                     //...
+                    if (connected) {//если подкючено
+                        utils.removeClasses($btnLeave, 'hidden');
+                        utils.addClasses($btnConnect, 'hidden');
+                        utils.addClasses($btnConnectPolice, 'hidden');
+                        utils.addClasses($btnConnectThief, 'hidden');
+                    } else {
+                        utils.addClasses($btnLeave, 'hidden');
+                        utils.removeClasses($btnConnect, 'hidden');
+                        utils.removeClasses($btnConnectPolice, 'hidden');
+                        utils.removeClasses($btnConnectThief, 'hidden');
+                    }
+
                     return;
                 }
 
@@ -401,31 +513,54 @@ $imgSwitch
                  * TODO: Task 12. Проинициализируйте состояние кнопок, для статусов
                  *      GameApi.GameStatus.starting и GameApi.GameStatus.inProcess
                  */
-                // ...
-            };
-            GameView.prototype.showLoading = () => {
-                /**
-                 * TODO: Task 13. Опишите доступность элементов при загрузке игры $container $error $loading
-                 */
-                // ...
-            };
-            GameView.prototype.showError = () => {
-                /**
-                 * TODO: Task 14. Опишите доступность элементов при показе ошибок $container $error $loading
-                 */
-                // ...
-            };
-            GameView.prototype.show = () => {
-                /**
-                 * TODO: Task 15. Опишите доступность элементов при показе игры $container $error $loading
-                 */
-                // ...
-            };
+                if (this.state.status === GameApi.GameStatus.starting ||
+                    this.state.status === GameApi.GameStatus.inProcess) {
+                    // ...
+                    utils.addClasses($btnStart, 'hidden');
+                    utils.addClasses($btnConnect, 'hidden');
+                    utils.addClasses($btnConnectPolice, 'hidden');
+                    utils.addClasses($btnConnectThief, 'hidden');
+                    utils.addClasses($btnLeave, 'hidden');
+                    //...
+                } else {
+                    utils.addClasses($btnPause, 'hidden');
+                    utils.addClasses($btnConnect, 'hidden');
+                    utils.addClasses($btnConnectPolice, 'hidden');
+                    utils.addClasses($btnConnectThief, 'hidden');
+                    utils.addClasses($btnLeave, 'hidden');
+                }
+            }
+        };
+        GameView.prototype.showLoading = () => {
+            /**
+             * TODO: Task 13. Опишите доступность элементов при загрузке игры $container $error $loading
+             */
+            // ... скрыть error gamecontainer. показать loading
+            utils.removeClasses($loading, 'hidden');
+            utils.addClasses($error, 'hidden');
+            utils.addClasses($containerGame, 'hidden');
+        };
+        GameView.prototype.showError = () => {
+            /**
+             * TODO: Task 14. Опишите доступность элементов при показе ошибок $container $error $loading
+             */
+            utils.addClasses($loading, 'hidden');
+            utils.removeClasses($error, 'hidden');
+            utils.addClasses($containerGame, 'hidden');
+        };
+        GameView.prototype.show = () => {
+            /**
+             * TODO: Task 15. Опишите доступность элементов при показе игры $container $error $loading
+             */
+            utils.addClasses($loading, 'hidden');
+            utils.addClasses($error, 'hidden');
+            utils.removeClasses($containerGame, 'hidden');
+        };
 
-            return GameView;
-        })();
-    })(app.game = app.game || {});
-})(window.app = window.app || {}, $);
+        return GameView;
+    })();
+})(app.game = app.game || {});
+}) (window.app = window.app || {}, $);
 
 
 (() => {
